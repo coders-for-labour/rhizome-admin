@@ -16,7 +16,7 @@
       "title": "Rhizome Admin",
       "description": "Administration tool for Rhizome.",
       "code": "rhizome-admin",
-      "version": "0.5.0",
+      "version": "0.5.1",
       "protocol": "http",
       "subdomain": "admin.rhizome",
       "domain": "codersforlabour.com"
