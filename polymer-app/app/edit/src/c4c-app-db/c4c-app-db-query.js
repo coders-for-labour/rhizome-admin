@@ -14,7 +14,8 @@ Polymer({
       type: Object
     },
     doc: {
-      type: Object
+      type: Object,
+      notify: true
     },
     findOne: {
       type: Object,
@@ -51,7 +52,10 @@ Polymer({
       return;
     }
 
-    this.set('query.__loaded', true);
+    if (this.query) {
+      this.__debug(this.get('query'));
+      this.set('query.__loaded', true);
+    }
   },
   __query: function() {
     this.__debug(this.query);
@@ -63,8 +67,14 @@ Polymer({
     this.__debug(data);
 
     for (let field in this.query) {
+      if (!this.query.hasOwnProperty(field)) {
+        continue;
+      }
       let command = this.query[field];
       for (let operator in command) {
+        if (!command.hasOwnProperty(operator)) {
+          continue;
+        }
         let operand = command[operator];
         this.__debug(`${field} ${operator} ${operand}`);
         data = this.__executeQuery(data, field, operator, operand);
@@ -72,17 +82,41 @@ Polymer({
     }
     this.__debug(data);
     this.set('findAll', data);
+    data.forEach((d, idx) => {
+      let dataIndex = this.doc.data.indexOf(d);
+
+      this.unlinkPaths(`findAll.#${idx}`);
+      if (dataIndex !== -1) {
+        this.linkPaths(`findAll.#${idx}`, `doc.data.#${dataIndex}`);
+        this.__debug(`Query: findOne linked to doc.data.#${dataIndex}`);
+      }
+    });
+
+
+
+    let dataIndex = data.length > 0 ? this.doc.data.indexOf(data[0]): -1;
     this.set('findOne', data.length > 0 ? data[0] : null);
+
+    this.unlinkPaths('findOne');
+    if (dataIndex !== -1) {
+      this.linkPaths('findOne', `doc.data.#${dataIndex}`);
+      this.__debug(`Query: findOne linked to doc.data.#${dataIndex}`);
+    }
+
     this.__debug(this.findOne);
   },
 
   __executeQuery: function(data, field, operator, operand) {
     let fns = {
+      $not: (rhs) => (lhs) => lhs[field] !== rhs,
       $eq: (rhs) => (lhs) => lhs[field] === rhs,
       $gt: (rhs) => (lhs) => lhs[field] > rhs,
       $lt: (rhs) => (lhs) => lhs[field] < rhs,
       $gte: (rhs) => (lhs) => lhs[field] >= rhs,
       $lte: (rhs) => (lhs) => lhs[field] <= rhs,
+      $in: (rhs) => (lhs) => rhs.indexOf(lhs[field]) !== -1,
+      $exists: (rhs) => (lhs) => (field in lhs) === rhs,
+      $inProp: (rhs) => (lhs) => lhs[field].indexOf(rhs) !== -1,
     };
 
     if (!fns[operator]) {
