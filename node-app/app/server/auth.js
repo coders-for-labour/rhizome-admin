@@ -20,7 +20,7 @@ module.exports.init = app => {
   passport.use(new GoogleStrategy({
     clientID: Config.auth.google.clientId,
     clientSecret: Config.auth.google.clientSecret,
-    callbackURL: `${Config.app.protocol}://${Config.app.subdomain}.${Config.app.domain}/auth/google/callback`
+    callbackURL: '/auth/google/callback'
   }, (accessToken, refreshToken, profile, cb) => {
     const user = {
       app: 'google',
