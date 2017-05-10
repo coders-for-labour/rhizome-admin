@@ -13,7 +13,7 @@
       "title": "Rhizome Admin",
       "description": "Administration tool for Rhizome.",
       "code": "rhizome-admin",
-      "version": "0.0.1",
+      "version": "0.5.0",
       "protocol": "http",
       "subdomain": "admin.rhizome",
       "domain": "codersforlabour.com"
@@ -21,7 +21,7 @@
     "auth": {
       "sessionSecret": "%RHIZOME_ADMIN_SESSION_SECRET%",
       "users": [
-        "chris@evansfinch.co.uk"
+        "%RHIZOME_ADMIN_DEFAULT_USER%"
       ],
       "rhizome": {
         "url": "%RHIZOME_ADMIN_RHIZOME_URL%",
@@ -53,14 +53,14 @@
     },
     "yubaba": {
       "logPath": {
-        "dev": "/home/chris/apps/rhizome-DEV/logs",
-        "prod": "/home/chris/apps/rhizome/logs",
-        "test": "/home/chris/apps/rhizome/logs"
+        "dev": "/home/chris/apps/rhizome-admin/logs",
+        "prod": "/home/chris/apps/rhizome-admin/logs",
+        "test": "/home/chris/apps/rhizome-admin/logs"
       },
       "appDataPath": {
-       "dev": "/home/chris/apps/rhizome-DEV/app_data",
-       "prod": "/home/chris/apps/rhizome/app_data",
-       "test": "/home/chris/apps/rhizome/app_data"
+       "dev": "/home/chris/apps/rhizome-admin/app_data",
+       "prod": "/home/chris/apps/rhizome-admin/app_data",
+       "test": "/home/chris/apps/rhizome-admin/app_data"
       },
       "listenPort": {
         "dev": 6001,

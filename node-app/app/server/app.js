@@ -89,7 +89,7 @@ configureApp(app.get('env'));
 Bootstrap
   .app(app)
   .then(() => {
-    Logging.log(`${Config.app.title} ${Config.app.version} listening on port ` +
+    Logging.log(`${Config.app.title} v${Config.app.version} listening on port ` +
       `${app.get('port')} in ${app.settings.env} mode.`, Logging.Constants.LogLevel.INFO);
     app.server = app.listen(app.set('port'));
   })
