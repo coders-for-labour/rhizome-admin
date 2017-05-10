@@ -13,12 +13,13 @@
       "title": "Rhizome Admin",
       "description": "Administration tool for Rhizome.",
       "code": "rhizome-admin",
-      "version": "v0.0.1",
+      "version": "0.0.1",
       "protocol": "http",
-      "subdomain": "dev.polymer.admin",
-      "domain": "rhizome.com"
+      "subdomain": "admin.rhizome",
+      "domain": "codersforlabour.com"
     },
     "auth": {
+      "sessionSecret": "%RHIZOME_ADMIN_SESSION_SECRET%",
       "users": [
         "chris@evansfinch.co.uk"
       ],
