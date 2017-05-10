@@ -1,0 +1,19 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/c4c-app/c4c-app.html",
+  "fragments": [
+    "src/views/c4c-orgs.html",
+    "src/views/my-view2.html",
+    "src/views/my-view3.html",
+    "src/views/my-view404.html"
+  ],
+  "sourceGlobs": [
+   "src/**/*",
+   "images/**/*",
+   "bower.json"
+  ],
+  "includeDependencies": [
+    "manifest.json",
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
+  ]
+}

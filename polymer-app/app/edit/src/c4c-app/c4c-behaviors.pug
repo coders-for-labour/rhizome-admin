@@ -1,0 +1,84 @@
+link(rel="import" href="/bower_components/polymer/polymer.html")
+
+script.
+  /**
+   * @polymerBehavior Polymer.C4CLogging
+   */
+  Polymer.C4CLogging = {
+    properties: {
+      LogLevel: {
+        type: Object,
+        value: function() {
+          return {
+            ERR: 0,
+            WARN: 1,
+            INFO: 2,
+            VERBOSE: 3,
+            DEBUG: 4,
+            SILLY: 5
+          };
+        }
+      },
+      logLevel: {
+        type: Number,
+        value: 4,
+      },
+      logLabel: {
+        type: String,
+        value: ''
+      },
+      enableLogTrace: {
+        type: Boolean,
+        value: false
+      }
+    },
+    __assert: function() {
+      console.assert.apply(console, arguments);
+    },
+    __err: function() {
+      if (this.logLevel >= this.LogLevel.ERR) {
+        console.error.apply(console, arguments);
+      }
+    },
+    __warn: function() {
+      if (this.logLevel >= this.LogLevel.WARN) {
+        console.error.apply(console, arguments);
+      }
+    },
+    __info: function() {
+      if (this.logLevel >= this.LogLevel.INFO) {
+        console.error.apply(console, arguments);
+      }
+    },
+    __verbose: function() {
+      if (this.logLevel >= this.LogLevel.VERBOSE) {
+        console.log.apply(console, arguments);
+      }
+    },
+    __log: function() {
+      if (this.logLevel >= this.LogLevel.VERBOSE) {
+
+        console.log.apply(console, arguments);
+      }
+    },
+    __debug: function() {
+      if (this.logLevel >= this.LogLevel.DEBUG) {
+        if (this.logLabel && console.group) {
+          console.group(this.logLabel);
+        }
+        console.log.apply(console, arguments);
+        if (this.logLabel && console.group) {
+          console.groupEnd(this.logLabel);
+        }
+
+        if (this.enableLogTrace) {
+          console.trace();
+        }
+      }
+    },
+    __silly: function() {
+      if (this.logLevel >= this.LogLevel.SILLY) {
+        console.log.apply(console, arguments);
+      }
+    },
+  }

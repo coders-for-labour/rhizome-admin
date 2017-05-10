@@ -1,0 +1,72 @@
+{
+  "environment": {
+    "RHIZOME_ADMIN_SERVER_ID": "",
+    "NODE_ENV": "development",
+    "RHIZOME_ADMIN_GOOGLE_CLIENT_ID": "",
+    "RHIZOME_ADMIN_GOOGLE_CLIENT_SECRET": "",
+    "RHIZOME_ADMIN_APP_TOKEN": "",
+    "RHIZOME_ADMIN_RHIZOME_URL": "http://dev.rhizome.com/api/v1"
+  },
+  "global": {
+    "env": "%NODE_ENV%",
+    "app": {
+      "title": "Rhizome Admin",
+      "description": "Administration tool for Rhizome.",
+      "code": "rhizome-admin",
+      "version": "0.5.0",
+      "protocol": "http",
+      "subdomain": "admin.rhizome",
+      "domain": "codersforlabour.com"
+    },
+    "auth": {
+      "sessionSecret": "%RHIZOME_ADMIN_SESSION_SECRET%",
+      "users": [
+        "%RHIZOME_ADMIN_DEFAULT_USER%"
+      ],
+      "rhizome": {
+        "url": "%RHIZOME_ADMIN_RHIZOME_URL%",
+        "appToken": "%RHIZOME_ADMIN_APP_TOKEN%"
+      },
+      "google": {
+        "clientId": "%RHIZOME_ADMIN_GOOGLE_CLIENT_ID%",
+        "clientSecret": "%RHIZOME_ADMIN_GOOGLE_CLIENT_SECRET%"
+      }
+    }
+  },
+  "local": {
+    "workstation1": {
+      "logPath": {
+        "dev":"/home/chris/Work/Workspaces/WebStorm/ra/node-app/logs/dev",
+        "prod":"/home/chris/Work/Workspaces/WebStorm/ra/node-app/logs/prod",
+        "test":"/home/chris/Work/Workspaces/WebStorm/ra/node-app/logs/test"
+      },
+      "appDataPath": {
+        "dev": "/home/chris/Work/Workspaces/WebStorm/ra/node-app/app_data",
+        "prod": "/home/chris/Work/Workspaces/WebStorm/ra/node-app/app_data",
+        "test": "/home/chris/Work/Workspaces/WebStorm/ra/node-app/app_data/test"
+      },
+      "listenPort": {
+        "dev": 6011,
+        "prod": 6010,
+        "test": 6012
+      }
+    },
+    "yubaba": {
+      "logPath": {
+        "dev": "/home/chris/apps/rhizome-admin/logs",
+        "prod": "/home/chris/apps/rhizome-admin/logs",
+        "test": "/home/chris/apps/rhizome-admin/logs"
+      },
+      "appDataPath": {
+       "dev": "/home/chris/apps/rhizome-admin/app_data",
+       "prod": "/home/chris/apps/rhizome-admin/app_data",
+       "test": "/home/chris/apps/rhizome-admin/app_data"
+      },
+      "listenPort": {
+        "dev": 6001,
+        "prod": 6000,
+        "test": 6002
+      }
+    }
+  }
+}

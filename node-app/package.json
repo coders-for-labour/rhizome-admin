@@ -1,0 +1,50 @@
+{
+  "name": "rhizome-admin",
+  "version": "0.5.0",
+  "description": "Admin tool for Rhizome.",
+  "author": "Coders for Labour",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": "~4.6.x",
+    "npm": "~2.15.x"
+  },
+  "main": "deploy/app.js",
+  "scripts": {
+    "start": "node deploy/app.js",
+    "dev": "nodemon deploy/app.js",
+    "build": "gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coders-for-corbyn/rhizome-admin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/coders-for-corbyn/rhizome-admin/issues"
+  },
+  "dependencies": {
+    "body-parser": "~1.15.x",
+    "express": "~4.13.x",
+    "express-session": "^1.14.2",
+    "level": "^1.5.0",
+    "level-session-store": "^2.0.1",
+    "method-override": "~2.3.x",
+    "morgan": "~1.7.x",
+    "passport": "~0.3.x",
+    "passport-google-oauth": "~1.0.0",
+    "proxyquire": "~1.7.x",
+    "restler": "~3.4.x",
+    "rhizome-api-js": "~0.0.x",
+    "winston": "~2.2.x",
+    "winston-logrotate": "~1.0.x"
+  },
+  "devDependencies": {
+    "eslint": "^3.3.x",
+    "eslint-config-google": "^0.6.x",
+    "eslint-config-xo": "^0.15.x",
+    "gulp": "^3.9.x",
+    "gulp-bump": "^2.4.x",
+    "gulp-clean": "^0.3.x",
+    "gulp-eslint": "^3.0.x"
+  }
+}

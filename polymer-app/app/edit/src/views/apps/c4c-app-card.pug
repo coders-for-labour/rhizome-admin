@@ -1,0 +1,68 @@
+link(rel="import" href="/bower_components/polymer/polymer.html")
+link(rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout.html")
+link(rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout-classes.html")
+link(rel="import" href="/bower_components/paper-button/paper-button.html")
+link(rel="import" href="../../c4c-app-db/c4c-app-db-query.html")
+link(rel="import" href="../../shared-styles.html")
+
+dom-module#c4c-app-card
+  template
+    style(is="custom-style" include="iron-flex iron-positioning iron-flex-alignment")
+    style(include="shared-styles").
+      :host {
+
+      }
+
+    c4c-app-db-query(db="[[db]]", doc="[[db.group]]", query="[[__groupQuery]]", find-one="{{__group}}")
+    .card
+      .layout.horizontal
+        .circle {{index}}
+        .layout.vertical
+          h2 {{item.name}}
+          p {{__group.name}}
+        .flex
+        .layout.vertical
+          .layout.horizontal
+            .flex
+            paper-icon-button(icon="delete", on-click="__rmItem")
+          paper-button(on-click="__viewItem") Details
+
+  script.
+    Polymer({
+      is: 'c4c-app-card',
+      properties: {
+        db: {
+          type: Object,
+          notifies: true
+        },
+        index: {
+          type: Number
+        },
+        item: {
+          type: Object
+        },
+        __groupQuery: {
+          type: Object,
+          computed: '__computeGroupQuery(item.owner.id, db.group.data.length)'
+        }
+      },
+      __rmItem: function() {
+        this.fire('rm-item', this.item);
+      },
+      __viewItem: function() {
+        this.fire('view-item', this.item);
+      },
+
+      __computeGroupQuery: function(groupId) {
+        if (!groupId) {
+          return null;
+        }
+
+        return {
+          id: {
+            $eq: groupId
+          }
+        }
+      }
+
+    });

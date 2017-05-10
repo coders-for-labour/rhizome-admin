@@ -1,0 +1,38 @@
+{
+  "name": "rhizome-admin-front-end",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Coders for Labour",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": "~4.4.x",
+    "npm": "~2.15.x"
+  },
+  "main": "deploy/app.js",
+  "scripts": {
+    "start": "node deploy/app.js",
+    "dev": "nodemon deploy/app.js",
+    "build": "gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coders-for-corbyn/rhizome-admin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/coders-for-corbyn/rhizome-admin/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^3.3.x",
+    "eslint-config-google": "^0.6.x",
+    "eslint-config-xo": "^0.15.x",
+    "gulp": "^3.9.x",
+    "gulp-clean": "^0.3.x",
+    "gulp-eslint": "^3.0.x",
+    "gulp-html-prettify": "^0.0.1",
+    "gulp-imagemin": "^3.1.1",
+    "gulp-pug": "^3.1.0",
+    "main-bower-files": "^2.13.1"
+  }
+}

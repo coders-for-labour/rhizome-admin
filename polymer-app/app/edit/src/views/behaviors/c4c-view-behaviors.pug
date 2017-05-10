@@ -1,0 +1,78 @@
+link(rel="import" href="/bower_components/polymer/polymer.html")
+
+script.
+  /**
+   * @polymerBehavior Polymer.C4CEditDialog
+   */
+  Polymer.C4CEditDialog= {
+    properties: {
+      auth: {
+        type: Object
+      },
+      title: {
+        type: String,
+        value: ""
+      },
+      submitTitle: {
+        type: String,
+        value: ""
+      },
+      item: {
+        type: Object,
+        notify: true,
+        value: {}
+      },
+      __edit: {
+        type: Object,
+        value: {
+          name: '',
+          type: '',
+          website: ''
+        }
+      },
+      open: {
+        type: Boolean,
+        notify: true,
+        observer: '__openChanged'
+      }
+    },
+    __openChanged: function () {
+      if (this.open === true) {
+        this.__debug(this.item);
+        if (this.item) {
+          this.__edit = Object.assign({}, this.item);
+        } else {
+          this.__edit = Object.assign({});
+        }
+        this.$.dialog.open();
+      } else {
+        this.$.dialog.close();
+      }
+    },
+
+    __formChanged: function () {
+      this.$.submit.disabled = !this.$.form.validate();
+    },
+
+    __formBeginSubmit: function () {
+      if (!this.$.form.validate()) {
+        return;
+      }
+      this.$.form.submit();
+    },
+
+    __formPresubmit: function (ev) {
+      ev.preventDefault();
+      this.item = Object.assign({}, this.__edit);
+      this.$.form.reset();
+      this.$.dialog.close();
+
+    },
+    __dialogClosed: function (ev) {
+      if (ev.target === this.$.dialog) {
+        this.fire('dialog-closed');
+      }
+    }
+  };
+
+script(src="c4c-list-view-behavior.js")

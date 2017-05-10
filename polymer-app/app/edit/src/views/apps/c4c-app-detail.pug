@@ -1,0 +1,130 @@
+link(rel="import" href="/bower_components/polymer/polymer.html")
+link(rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout.html")
+link(rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout-classes.html")
+link(rel="import" href="../../c4c-app-db/c4c-app-db-query.html")
+link(rel="import" href="../../c4c-app/c4c-behaviors.html")
+link(rel="import" href="../groups/c4c-group-card.html")
+link(rel="import" href="../orgs/c4c-org-card.html")
+link(rel="import" href="../../shared-styles.html")
+
+dom-module#c4c-app-detail
+  template
+    style(is="custom-style" include="iron-flex iron-positioning iron-flex-alignment")
+    style(include="shared-styles").
+      :host {
+
+      }
+
+    c4c-app-db-query(db="{{db}}", doc="{{db.group}}", query="[[groupQuery]]", find-one="{{owner}}")
+    c4c-app-db-query(db="{{db}}", doc="{{db.org}}", query="[[orgQuery]]", find-one="{{ownerOrg}}")
+
+    .card
+      .layout.vertical
+        h2 Authentication Token
+        p These tokens are used to authenticate requests to the Rhizome API by this application:
+        p {{item.token}}
+
+
+    .card
+      .layout.vertical
+        h2 Owner Group
+        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tum Quintus: Est plane, Piso, ut dicis, inquit. Aliter autem vobis placet. Poterat autem inpune; Sed nunc, quod agimus;
+
+    c4c-group-card(db="{{db}}", item="[[owner]]",on-view-item="__viewGroup")
+
+    .card
+      .layout.vertical
+        h2 Owner Organisation
+        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tum Quintus: Est plane, Piso, ut dicis, inquit. Aliter autem vobis placet. Poterat autem inpune; Sed nunc, quod agimus;
+
+    c4c-org-card(db="{{db}}", item="[[ownerOrg]]",on-view-item="__viewOrg")
+
+  script.
+    Polymer({
+      is: 'c4c-app-detail',
+      behaviors: [Polymer.C4CLogging],
+      properties: {
+        logLevel: {
+          type: Number,
+          value: 3
+        },
+        logLabel: {
+          type: String,
+          value: "app-detail"
+        },
+        db: {
+          type: Object,
+          notify: true
+        },
+        item: {
+          type: Object
+        },
+        route: {
+          type: Object,
+          notify: true
+        },
+        routeData: {
+          type: Object,
+          notify: true
+        },
+        owner: {
+          type: Object,
+          observer: '__owner'
+        },
+        groupQuery: {
+          type: Object,
+          computed: '__computeGroupQuery(item.owner.id, db.group.data.length)'
+        },
+        orgQuery: {
+          type: Object,
+          computed: '__computeOrgQuery(item.owner.organisation, db.org.data.length)'
+        },
+      },
+      observers: [
+        '__owner(owner.*)'
+      ],
+      __owner: function() {
+        this.__debug(`Owner: ${this.owner.name}`);
+      },
+
+      __rmItem: function() {
+        this.fire('rm-item', this.item);
+      },
+      __editItem: function() {
+        this.fire('edit-item', this.item);
+      },
+      __viewGroup: function() {
+        this.__debug(this.owner.id);
+        this.set('routeData.page', 'groups');
+        this.set('route.path', `/groups/${this.owner.id}`);
+      },
+      __viewOrg: function() {
+        this.__debug(this.owner.organisation);
+        this.set('routeData.page', 'orgs');
+        this.set('route.path', `/orgs/${this.owner.organisation}`);
+      },
+      __computeGroupQuery: function (groupId) {
+        //this.__debug(orgId);
+        if (!groupId) {
+          return null;
+        }
+
+        return {
+          id: {
+            $eq: groupId
+          }
+        }
+      },
+      __computeOrgQuery: function (orgId) {
+        //this.__debug(orgId);
+        if (!orgId) {
+          return null;
+        }
+
+        return {
+          id: {
+            $eq: orgId
+          }
+        }
+      }
+    });

@@ -1,0 +1,239 @@
+//-@license
+  Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+  This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+  The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+  The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+  Code distributed by Google as part of the polymer project is also
+  subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+
+link(rel="import" href="/bower_components/polymer/polymer.html")
+link(rel="import" href="/bower_components/app-layout/app-drawer/app-drawer.html")
+link(rel="import" href="/bower_components/app-layout/app-drawer-layout/app-drawer-layout.html")
+link(rel="import" href="/bower_components/app-layout/app-header/app-header.html")
+link(rel="import" href="/bower_components/app-layout/app-header-layout/app-header-layout.html")
+link(rel="import" href="/bower_components/app-layout/app-scroll-effects/app-scroll-effects.html")
+link(rel="import" href="/bower_components/app-layout/app-toolbar/app-toolbar.html")
+link(rel="import" href="/bower_components/app-layout/demo/sample-content.html")
+link(rel="import" href="/bower_components/app-route/app-location.html")
+link(rel="import" href="/bower_components/app-route/app-route.html")
+link(rel="import" href="/bower_components/iron-pages/iron-pages.html")
+link(rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout.html")
+link(rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout-classes.html")
+link(rel="import" href="/bower_components/iron-selector/iron-selector.html")
+link(rel="import" href="/bower_components/iron-image/iron-image.html")
+//link(rel="import" href="/bower_components/iron-icons/iron-icons.html")
+link(rel="import" href="/bower_components/iron-icons/social-icons.html")
+link(rel="import" href="/bower_components/iron-icons/communication-icons.html")
+link(rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html")
+link(rel="import" href="/bower_components/paper-toast/paper-toast.html")
+link(rel="import" href="../my-icons.html")
+link(rel="import" href="../c4c-auth/c4c-auth.html")
+link(rel="import" href="../c4c-app-db/c4c-app-db.html")
+link(rel="import", href="c4c-behaviors.html")
+
+dom-module#c4c-app
+  template
+    style(is="custom-style" include="iron-flex iron-positioning iron-flex-alignment ")
+    style(is="custom-style").
+      :root {
+      --accent-color: #bb1d26;
+      --default-primary-color-lighten-90: #EDFFFF;
+      --default-primary-color-lighten-70: #BBFFFF;
+      --default-primary-color-lighten-40: #6EDEFF;
+      --default-primary-color-lighten-30: #55C5FE;
+      --default-primary-color-lighten-20: #3BABE4;
+      --default-primary-color-lighten-15: #2E9ED7;
+      --default-primary-color-lighten-10: #2292CB;
+      --default-primary-color-lighten-5: #1585BE;
+      --default-primary-color: #c62828;
+      --default-primary-color-darken-5: #006BA4;
+      --default-primary-color-darken-10: #005F98;
+      --default-primary-color-darken-15: #00528B;
+      --default-primary-color-darken-20: #00457E;
+      --paper-menu-color: var(--default-primary-color-darken-20);
+      --text-primary-color: #fff;
+      --text-secondary-color: #3f3f3f;
+      --text-tertiary-color: #6f6f6f;
+      --paper-toolbar-background: var(--default-primary-color);
+      --paper-toolbar-color: var(--text-primary-color);
+      --paper-spinner-layer-1-color: var(--default-primary-color);
+      --paper-spinner-layer-2-color: var(--default-primary-color);
+      --paper-spinner-layer-3-color: var(--default-primary-color);
+      --paper-spinner-layer-4-color: var(--default-primary-color);
+      }
+    style.
+      :host {
+        --app-primary-color: var(--default-primary-color);
+        --app-secondary-color: black;
+
+        display: block;
+      }
+
+      app-drawer#drawer {
+
+      }
+
+      #drawer > app-header {
+        color: var(--text-primary-color);
+        background-color: var(--default-primary-color);
+      }
+
+      #drawer > app-toolbar {
+      }
+
+      app-header#app {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        color: #fff;
+        background-color: var(--app-primary-color);
+        --app-header-background-front-layer: {
+          background-image: url(/images/banner.jpg);
+        };
+      }
+
+      app-header#app paper-icon-button {
+        --paper-icon-button-ink-color: white;
+      }
+
+      #app > app-toolbar.middle {
+        height: 120px;
+      }
+
+      #app > app-toolbar.bottom {
+        height: 92px;
+      }
+
+      #app > [main-title] {
+        margin-left: 64px;
+        font-size: 32px;
+        font-weight: 300;
+      }
+
+      #app > [condensed-title] {
+        margin-left: 20px;
+        font-weight: 300;
+      }
+
+      sample-content {
+        padding-top: 276px;
+      }
+
+      .drawer-list {
+        margin: 0 20px;
+      }
+
+      .drawer-list a {
+        display: block;
+
+        padding: 0 16px;
+
+        text-decoration: none;
+
+        color: var(--app-secondary-color);
+
+        line-height: 40px;
+      }
+      iron-image {
+        border-radius: 50%;
+        margin-left: 5px;
+      }
+      paper-icon-button {
+        --paper-icon-button: {
+          margin-right: 10px;
+        }
+      }
+
+      c4c-orgs, c4c-groups, c4c-apps {
+        padding-top: 276px;
+      }
+
+      .drawer-list a.iron-selected {
+        color: black;
+
+        font-weight: bold;
+      }
+
+    app-location(route="{{route}}")
+    app-route(
+        route="{{route}}",
+        pattern="/:page",
+        data="{{routeData}}",
+        tail="{{subroute}}")
+    app-route(
+        route="{{subroute}}",
+        pattern="/:id",
+        data="{{subrouteData}}")
+    c4c-auth-service#authService(status="{{authStatus}}", auth="{{auth}}", login-details="[[loginDetails]]")
+    c4c-app-db#db(status="{{dbStatus}}", auth="[[auth]]", db="{{db}}", on-error="__dataServiceError")
+    paper-toast#toast()
+
+    iron-pages(attr-for-selected="name", selected="{{mode}}")
+      section(name="authenticating")
+      section(name="authenticate")
+        .layout.horizontal.center.center-justified.auth-container(style="height: 100vh;")
+          c4c-auth(auth="[[auth]]")
+      section(name="application")
+        app-header#app(effects="waterfall resize-title blend-background parallax-background", condenses, reveals)
+          app-toolbar
+            paper-icon-button(icon="menu", hidden$="{{__hideMenuButton}}", on-click="__toggleDrawer")
+            paper-icon-button(icon="arrow-back", hidden$="{{__hideBackButton}}", on-click="__backButton")
+            div(condensed-title) {{mainTitle}}
+            paper-icon-button(icon="communication:chat")
+            paper-icon-button(icon="social:notifications-none")
+            img(src="{{auth.user.profiles.0.images.profile}}", width=32,height=32, style="width: 32px; height; 32px; border-radius:50%;")
+          app-toolbar.middle
+          app-toolbar(main-title).bottom {{mainTitle}}
+
+        app-drawer#drawer(swipe-open)
+          app-header
+            app-toolbar
+              div(main-title) Rhizome
+          iron-selector(selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation")
+            a(name="orgs", href="/orgs") Organisations
+            a(name="groups", href="/groups") Groups
+            a(name="apps", href="/apps") Applications
+            a(name="users", href="/users") Users
+
+        //-sample-content(size="100")
+        iron-pages(
+          selected="[[page]]",
+          attr-for-selected="name",
+          fallback-selection="view404",
+          role="main")
+          c4c-orgs(
+            name="orgs",
+            title="Organisation",
+            sub-page-title="{{subPageTitle}}",
+            route="{{route}}",
+            route-data="{{routeData}}",
+            subroute="{{subroute}}",
+            subroute-data="{{subrouteData}}",
+            auth="[[auth]]",
+            doc="{{db.org}}",
+            db="{{db}}")
+          c4c-groups(
+            name="groups",
+            title="Group",
+            route="{{route}}",
+            route-data="{{routeData}}",
+            sub-page-title="{{subPageTitle}}",
+            subroute="{{subroute}}",
+            subroute-data="{{subrouteData}}",
+            auth="[[auth]]",
+            doc="{{db.group}}",
+            db="{{db}}")
+          c4c-apps(
+            name="apps",
+            title="Application",
+            sub-page-title="{{subPageTitle}}",
+            subroute="{{subroute}}",
+            subroute-data="{{subrouteData}}",
+            auth="[[auth]]",
+            doc="{{db.app}}",
+            db="{{db}}")
+          c4c-users(name="users")
+          c4c-view404(name="view404")
+
+  script(src="c4c-app.js")

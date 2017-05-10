@@ -1,0 +1,106 @@
+link(rel="import" href="/bower_components/polymer/polymer.html")
+link(rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout.html")
+link(rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout-classes.html")
+link(rel="import" href="/bower_components/iron-form/iron-form.html")
+link(rel="import" href="/bower_components/paper-button/paper-button.html")
+link(rel="import" href="/bower_components/paper-fab/paper-fab.html")
+link(rel="import" href="/bower_components/paper-input/paper-input.html")
+link(rel="import" href="/bower_components/paper-dialog/paper-dialog.html")
+link(rel="import" href="/bower_components/paper-dropdown-menu/paper-dropdown-menu.html")
+link(rel="import" href="/bower_components/paper-menu/paper-menu.html")
+link(rel="import" href="/bower_components/paper-item/paper-item.html")
+link(rel="import" href="/bower_components/paper-spinner/paper-spinner.html")
+link(rel="import" href="/bower_components/iron-icon/iron-icon.html")
+link(rel="import" href="/bower_components/iron-icons/iron-icons.html")
+link(rel="import" href="/bower_components/iron-pages/iron-pages.html")
+link(rel="import" href="../../c4c-app-db/c4c-app-db-query.html")
+link(rel="import" href="../behaviors/c4c-view-behaviors.html")
+link(rel="import" href="../../c4c-app/c4c-behaviors.html")
+link(rel="import" href="../orgs/c4c-org-card.html")
+link(rel="import" href="../../shared-styles.html")
+
+dom-module#c4c-group-detail
+  template
+    style(is="custom-style" include="iron-flex iron-positioning iron-flex-alignment")
+    style(include="shared-styles").
+      :host {
+
+      }
+
+    c4c-app-db-query(db="{{db}}", doc="{{db.org}}", query="[[orgQuery]]", find-one="{{owner}}", find-all="{{results}}")
+
+    .card
+      .layout.vertical
+        h2 Parent Organisation
+        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tum Quintus: Est plane, Piso, ut dicis, inquit. Aliter autem vobis placet. Poterat autem inpune; Sed nunc, quod agimus;
+
+    c4c-org-card(db="{{db}}", item="[[owner]]",on-rm-item="__rmItem", on-view-item="__viewOrg")
+
+  script.
+    Polymer({
+      is: 'c4c-group-detail',
+      behaviors: [Polymer.C4CLogging],
+      properties: {
+        logLevel: {
+          type: Number,
+          value: 3
+        },
+        logLabel: {
+          type: String,
+          value: "group-detail"
+        },
+        db: {
+          type: Object,
+          notify: true
+        },
+        item: {
+          type: Object
+        },
+        route: {
+          type: Object,
+          notify: true
+        },
+        routeData: {
+          type: Object,
+          notify: true
+        },
+        owner: {
+          type: Object,
+          observer: '__owner'
+        },
+        orgQuery: {
+          type: Object,
+          computed: '__computeOrgQuery(item.organisation)'
+        },
+      },
+      observers: [
+        '__owner(owner.*)'
+      ],
+      __owner: function() {
+        this.__debug(`Owner: ${this.owner.name}`);
+      },
+
+      __rmItem: function() {
+        this.fire('rm-item', this.item);
+      },
+      __editItem: function() {
+        this.fire('edit-item', this.item);
+      },
+      __viewOrg: function() {
+        this.__debug(this.owner.id);
+        this.set('routeData.page', 'orgs');
+        this.set('route.path', `/orgs/${this.owner.id}`);
+      },
+      __computeOrgQuery: function (orgId) {
+        //this.__debug(orgId);
+        if (!orgId) {
+          return null;
+        }
+
+        return {
+          id: {
+            $eq: orgId
+          }
+        }
+      }
+    });

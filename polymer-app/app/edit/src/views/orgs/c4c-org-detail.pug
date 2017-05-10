@@ -1,0 +1,96 @@
+link(rel="import" href="/bower_components/polymer/polymer.html")
+link(rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout.html")
+link(rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout-classes.html")
+link(rel="import" href="/bower_components/iron-form/iron-form.html")
+link(rel="import" href="/bower_components/paper-button/paper-button.html")
+link(rel="import" href="/bower_components/paper-fab/paper-fab.html")
+link(rel="import" href="/bower_components/paper-input/paper-input.html")
+link(rel="import" href="/bower_components/paper-dialog/paper-dialog.html")
+link(rel="import" href="/bower_components/paper-dropdown-menu/paper-dropdown-menu.html")
+link(rel="import" href="/bower_components/paper-menu/paper-menu.html")
+link(rel="import" href="/bower_components/paper-item/paper-item.html")
+link(rel="import" href="/bower_components/paper-spinner/paper-spinner.html")
+link(rel="import" href="/bower_components/iron-icon/iron-icon.html")
+link(rel="import" href="/bower_components/iron-icons/iron-icons.html")
+link(rel="import" href="/bower_components/iron-pages/iron-pages.html")
+link(rel="import" href="../../c4c-app-db/c4c-app-db-query.html")
+link(rel="import" href="../behaviors/c4c-view-behaviors.html")
+link(rel="import" href="../groups/c4c-group-card.html")
+link(rel="import" href="../../c4c-app/c4c-behaviors.html")
+link(rel="import" href="../../shared-styles.html")
+
+dom-module#c4c-org-detail
+  template
+    style(is="custom-style" include="iron-flex iron-positioning iron-flex-alignment")
+    style(include="shared-styles").
+      :host {
+
+      }
+
+    c4c-app-db-query(db="{{db}}", doc="{{db.group}}", query="[[groupsQuery]]", find-one="{{group}}", find-all="{{results}}")
+
+    .card
+      .layout.vertical
+        h2 Groups
+        p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tum Quintus: Est plane, Piso, ut dicis, inquit. Aliter autem vobis placet. Poterat autem inpune; Sed nunc, quod agimus;
+
+    template(is="dom-repeat", items="[[results]]")
+      .layout.horizontal
+        c4c-group-card.flex(db="{{db}}", item="{{item}}", on-view-item="__viewGroup")
+
+  script.
+    Polymer({
+      is: 'c4c-org-detail',
+      behaviors: [Polymer.C4CLogging],
+      properties: {
+        logLevel: {
+          type: Number,
+          value: 3
+        },
+        route: {
+          type: Object,
+          notify: true
+        },
+        routeData: {
+          type: Object,
+          notify: true
+        },
+        db: {
+          type: Object,
+          notify: true
+        },
+        doc: {
+          type: Object
+        },
+        item: {
+          type: Object
+        },
+        groupsQuery: {
+          type: Object,
+          computed: '__computeGroupsQuery(item.id)'
+        },
+      },
+      __rmItem: function() {
+        this.fire('rm-item', this.item);
+      },
+      __editItem: function() {
+        this.fire('edit-item', this.item);
+      },
+      __viewGroup: function(ev) {
+        this.__debug('viewGroup');
+        this.set('routeData.page', 'groups');
+        this.set('route.path', `/groups/${ev.model.get('item').id}`);
+      },
+      __computeGroupsQuery: function (id) {
+        this.__debug(id);
+        if (!id) {
+          return null;
+        }
+
+        return {
+          organisation: {
+            $eq: id
+          }
+        }
+      }
+    });

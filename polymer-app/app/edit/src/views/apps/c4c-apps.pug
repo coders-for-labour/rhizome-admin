@@ -1,0 +1,112 @@
+link(rel="import" href="/bower_components/polymer/polymer.html")
+link(rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout.html")
+link(rel="import" href="/bower_components/iron-flex-layout/iron-flex-layout-classes.html")
+link(rel="import" href="/bower_components/iron-form/iron-form.html")
+link(rel="import" href="/bower_components/paper-button/paper-button.html")
+link(rel="import" href="/bower_components/paper-fab/paper-fab.html")
+link(rel="import" href="/bower_components/paper-input/paper-input.html")
+link(rel="import" href="/bower_components/paper-dialog/paper-dialog.html")
+link(rel="import" href="/bower_components/paper-dropdown-menu/paper-dropdown-menu.html")
+link(rel="import" href="/bower_components/paper-menu/paper-menu.html")
+link(rel="import" href="/bower_components/paper-item/paper-item.html")
+link(rel="import" href="/bower_components/paper-spinner/paper-spinner.html")
+link(rel="import" href="/bower_components/iron-icon/iron-icon.html")
+link(rel="import" href="/bower_components/iron-icons/iron-icons.html")
+link(rel="import" href="/bower_components/iron-pages/iron-pages.html")
+link(rel="import" href="../behaviors/c4c-view-behaviors.html")
+link(rel="import" href="../../shared-styles.html")
+link(rel="import" href="c4c-app-card.html")
+link(rel="import" href="c4c-app-detail.html")
+
+dom-module#c4c-app-dialog
+  template
+    style(include="shared-styles").
+      :host{
+
+      }
+
+    paper-dialog#dialog(on-iron-overlay-closed="__dialogClosed")
+      h2 {{title}}
+      form#form(
+      is="iron-form",
+      on-change="__formChanged"
+      on-iron-form-presubmit="__formPresubmit"
+      )
+        paper-input(name="name", label="Name", value="{{__edit.name}}", required, auto-validate)
+        paper-dropdown-menu(name="type", label="Type", required, auto-validate)
+          paper-menu.dropdown-content(attr-for-selected="label", selected="{{__edit.type}}")
+            paper-item(label="server") Server
+            paper-item(label="browser") Browser
+        paper-dropdown-menu(name="authLevel", label="Auth Level", required, auto-validate)
+          paper-menu.dropdown-content(attr-for-selected="label", selected="{{__edit.authLevel}}")
+            paper-item(label="0") NONE
+            paper-item(label="1") USER
+            paper-item(label="2") ADMIN
+            paper-item(label="3") SUPER
+        paper-dropdown-menu(name="group", label="Owner Group", required, auto-validate)
+          paper-menu.dropdown-content(attr-for-title="title", attr-for-selected="label", selected="{{__edit.ownerGroupId}}")
+            template(is="dom-repeat", items="{{groups}}", as="group")
+              paper-item(title="{{group.name}}", label="{{group.id}}") {{group.name}}
+
+        .buttons
+          paper-button(dialog-dismiss) Cancel
+          paper-button(autofocus, on-click="__formBeginSubmit") {{submitTitle}}
+        .output
+
+  script(src="c4c-app-dialog.js")
+
+dom-module#c4c-apps
+  template
+    style(is="custom-style" include="iron-flex iron-positioning iron-flex-alignment")
+    style(include="shared-styles").
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      paper-fab {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+      }
+
+    iron-pages(
+    selected='[[__loadMode]]',
+    attr-for-selected='name',
+    role='loading'
+    )
+      .layout.horizontal.center.center-justified.auth-container(name="loading", style="height: 90vh;")
+        paper-spinner(active, alt="Loading app data...", style="width: 64px; height: 64px;")
+      div(name="loaded")
+        iron-pages(
+          selected='[[__pageMode]]',
+          attr-for-selected='name',
+          role='loaded')
+
+
+          div(name="list")
+            template(is="dom-repeat", items="{{doc.data}}")
+              c4c-app-card(db="{{db}}", item="{{item}}", on-view-item="__viewItem", on-rm-item="__rmItem")
+            paper-fab#fab(icon="icons:add", on-click="__addItem")
+          div(name="detail")
+            c4c-app-detail(db="{{db}}", item="{{__selectedItem}}", route="{{route}}", route-data="{{routeData}}")
+
+
+    paper-dialog#rmItemDialog(on-iron-overlay-closed="__dialogClosed")
+      h2 Delete App
+      p Are you sure? This is permanent!
+      .buttons
+        paper-button(dialog-dismiss) No
+        paper-button(dialog-confirm, autofocus, on-click="__rmItemConfirmed") Yes
+
+    c4c-app-dialog#editItemDialog(
+      db="{{db}}",
+      groups="[[db.group.data]]",
+      item="{{__editItem}}",
+      title="{{__dialogTitle}}",
+      submit-title="{{__dialogSubmitTitle}}",
+      open="{{__dialogOpen}}",
+      on-dialog-closed="__dialogClosed")
+
+  script(src="c4c-apps.js")

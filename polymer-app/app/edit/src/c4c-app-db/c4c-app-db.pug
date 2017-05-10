@@ -1,0 +1,16 @@
+link(rel="import", href="/bower_components/polymer/polymer.html")
+link(rel="import" href="c4c-data-service.html")
+link(rel="import", href="../c4c-app/c4c-behaviors.html")
+
+dom-module#c4c-app-db
+  template
+    style.
+      :host {
+        display: none;
+      }
+
+    c4c-data-service#org(route="org", status="{{db.org.status}}", auth="[[auth]]", data="{{db.org.data}}")
+    c4c-data-service#group(route="group", status="{{db.group.status}}", auth="[[auth]]", data="{{db.group.data}}")
+    c4c-data-service#app(route="app", status="{{db.app.status}}", auth="[[auth]]", data="{{db.app.data}}")
+
+  script(src="c4c-app-db.js")
