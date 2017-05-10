@@ -10,11 +10,12 @@
  *
  */
 
-var Logging = require('./logging');
-var Config = require('./config');
-var passport = require('passport');
-var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-var Rhizome = require('rhizome-api-js');
+const Logging = require('./logging');
+const Config = require('./config');
+const Cache = require('./cache');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const Rhizome = require('rhizome-api-js');
 
 module.exports.init = app => {
   passport.use(new GoogleStrategy({
@@ -35,26 +36,39 @@ module.exports.init = app => {
 
     Logging.logDebug(user);
 
-    var authenticated = Config.auth.users.indexOf(user.email) !== -1;
-    var authentication;
-    if (authenticated) {
-      authentication = {
-        authLevel: 3,
-        domains: ["http://dev.polymer.admin.rhizome.com/"],
-        permissions: [{
-          route: "*",
-          permission: "*"
-        }]
-      };
-    }
+    let cache = Cache.Manager.getCache(Cache.Constants.Type.TEAM);
+    cache.getData()
+      .then(users => {
+        let authenticated = users.find(u => u.email === user.email);
+        let authentication;
+        if (authenticated) {
+          authentication = {
+            authLevel: 3,
+            domains: ["http://admin.rhizome.codersforlabour.com"],
+            permissions: [{
+              route: "*",
+              permission: "*"
+            }]
+          };
+          user.orgRole = authenticated.orgRole;
+          user.teamName = authenticated.teamName;
+          user.teamRole = authenticated.teamRole;
+        } else {
+          Logging.logError(new Error(`Unknown User: ${user.email}`));
+          cb(new Error(`Unknown User: ${user.email}`), null);
+          return;
+        }
 
-    Logging.logDebug(authentication);
+        Logging.logSilly(authentication);
 
-    Rhizome.Auth
-      .findOrCreateUser(user, authentication)
-      .then(Logging.Promise.log("RhizomeUser: "))
-      .then(rhizomeUser => cb(null, rhizomeUser))
-      .catch(Logging.Promise.logError());
+        Rhizome.Auth
+          .findOrCreateUser(user, authentication)
+          .then(Logging.Promise.logSilly("RhizomeUser"))
+          .then(rhizomeUser => {
+            cb(null, rhizomeUser);
+          })
+          .catch(Logging.Promise.logError());
+      });
   }));
 
   passport.serializeUser((user, done) => {

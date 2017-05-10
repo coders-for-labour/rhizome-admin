@@ -10,23 +10,22 @@
  *
  */
 
-// var path = require('path');
-// var fs = require('fs');
 const Config = require('./config');
-// var Model = require('./model');
-// var Routes = require('./routes');
 // var Logging = require('./logging');
 const Rhizome = require('rhizome-api-js');
 const Auth = require('./auth');
+const Cache = require('./cache');
+const Users = require('./users');
 
 var _installApp = app => {
   Rhizome.init({
     rhizomeUrl: Config.auth.rhizome.url,
     appToken: Config.auth.rhizome.appToken
   });
+
+  Cache.Manager.create(Cache.Constants.Type.TEAM);
   Auth.init(app);
-  // Model.init(app);
-  // Routes.init(app);
+  Users.init(app);
 
   return Promise.resolve(true);
 };

@@ -123,8 +123,42 @@ module.exports.log = (log, level) => {
 /**
  * @param {string} log - Text to log
  */
+module.exports.logInfo = log => {
+  module.exports.log(log, LogLevel.INFO);
+};
+
+/**
+ * @param {string} log - Text to log
+ */
+module.exports.logVerbose = log => {
+  module.exports.log(log, LogLevel.VERBOSE);
+};
+
+/**
+ * @param {string} log - Text to log
+ */
 module.exports.logDebug = log => {
-  module.exports.log(log);
+  module.exports.log(log, LogLevel.DEBUG);
+};
+
+/**
+ * @param {string} log - Text to log
+ */
+module.exports.logSilly = log => {
+  module.exports.log(log, LogLevel.SILLY);
+};
+
+/**
+ * @param {string} warn - warning to log
+ */
+module.exports.logWarn = warn => {
+  _log(warn, LogLevel.ERR);
+};
+/**
+ * @param {string} err - error object to log
+ */
+module.exports.logError = err => {
+  _log(err, LogLevel.ERR);
 };
 
 /**
@@ -274,8 +308,42 @@ module.exports.Promise.logArrayProp = (log, prop, level) => {
 
 /**
  * @param {string} log - Text to log
- * @param {string} prop - Name of the `res[]` property to log
- * @param {integer} level - level to log at
+ * @return {function(*)} - returns a function for chaining into a promise
+ */
+module.exports.Promise.logVerbose = log => {
+  var level = LogLevel.VERBOSE;
+  return res => {
+    _log(log, level);
+    _log(res, level);
+    return res;
+  };
+};
+
+/**
+ * @param {string} log - Text to log
+ * @return {function(*)} - returns a function for chaining into a promise
+ */
+module.exports.Promise.logDebug = log => {
+  var level = LogLevel.DEBUG;
+  return res => {
+    _log(log, level);
+    _log(res, level);
+    return res;
+  };
+};
+/**
+ * @param {string} log - Text to log
+ * @return {function(*)} - returns a function for chaining into a promise
+ */
+module.exports.Promise.logSilly = log => {
+  var level = LogLevel.SILLY;
+  return res => {
+    _log(log, level);
+    _log(res, level);
+    return res;
+  };
+};
+/**
  * @return {function(*)} - returns a function for chaining into a promise
  */
 module.exports.Promise.logError = () => {
