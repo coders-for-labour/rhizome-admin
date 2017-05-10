@@ -2,6 +2,7 @@
   "environment": {
     "RHIZOME_ADMIN_SERVER_ID": "",
     "NODE_ENV": "development",
+    "RHIZOME_ADMIN_SESSION_SECRET": "",
     "RHIZOME_ADMIN_GOOGLE_CLIENT_ID": "",
     "RHIZOME_ADMIN_GOOGLE_CLIENT_SECRET": "",
     "RHIZOME_ADMIN_APP_TOKEN": "",
