@@ -13,7 +13,7 @@ dom-module#c4c-app-card
 
       }
 
-    c4c-app-db-query(db="{{db}}", doc="{{db.group}}", query="{{groupQuery}}", find-one="{{__group}}")
+    c4c-app-db-query(db="[[db]]", doc="[[db.group]]", query="[[__groupQuery]]", find-one="{{__group}}")
     .card
       .layout.horizontal
         .circle {{index}}
@@ -31,15 +31,19 @@ dom-module#c4c-app-card
     Polymer({
       is: 'c4c-app-card',
       properties: {
+        db: {
+          type: Object,
+          notifies: true
+        },
         index: {
           type: Number
         },
         item: {
           type: Object
         },
-        groupQuery: {
+        __groupQuery: {
           type: Object,
-          computed: '__computeGroupQuery(item.owner.id)'
+          computed: '__computeGroupQuery(item.owner.id, db.group.data.length)'
         }
       },
       __rmItem: function() {

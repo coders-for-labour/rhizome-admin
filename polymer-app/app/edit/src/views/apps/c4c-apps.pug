@@ -45,7 +45,7 @@ dom-module#c4c-app-dialog
             paper-item(label="3") SUPER
         paper-dropdown-menu(name="group", label="Owner Group", required, auto-validate)
           paper-menu.dropdown-content(attr-for-title="title", attr-for-selected="label", selected="{{__edit.ownerGroupId}}")
-            template(is="dom-repeat", items="{{db.group.data}}", as="group")
+            template(is="dom-repeat", items="{{groups}}", as="group")
               paper-item(title="{{group.name}}", label="{{group.id}}") {{group.name}}
 
         .buttons
@@ -66,7 +66,7 @@ dom-module#c4c-apps
       }
 
       paper-fab {
-        position: absolute;
+        position: fixed;
         bottom: 30px;
         right: 30px;
       }
@@ -101,7 +101,8 @@ dom-module#c4c-apps
         paper-button(dialog-confirm, autofocus, on-click="__rmItemConfirmed") Yes
 
     c4c-app-dialog#editItemDialog(
-      db="{{db}}"
+      db="{{db}}",
+      groups="[[db.group.data]]",
       item="{{__editItem}}",
       title="{{__dialogTitle}}",
       submit-title="{{__dialogSubmitTitle}}",

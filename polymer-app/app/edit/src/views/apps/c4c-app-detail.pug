@@ -73,11 +73,11 @@ dom-module#c4c-app-detail
         },
         groupQuery: {
           type: Object,
-          computed: '__computeGroupQuery(item.owner.id)'
+          computed: '__computeGroupQuery(item.owner.id, db.group.data.length)'
         },
         orgQuery: {
           type: Object,
-          computed: '__computeOrgQuery(item.owner.organisation)'
+          computed: '__computeOrgQuery(item.owner.organisation, db.org.data.length)'
         },
       },
       observers: [

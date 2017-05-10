@@ -5,6 +5,9 @@ Polymer({
     logLevel: {
       type: Number,
       value: 3,
+    },
+    groups: {
+      type: Array
     }
   }
 });
