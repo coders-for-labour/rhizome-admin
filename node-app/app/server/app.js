@@ -56,7 +56,7 @@ var configureApp = env => {
   app.use(session({
     saveUninitialized: false,
     resave: false,
-    secret: '6gZ1GsaKbZG4Pq7boSMp7YuZQTGnP6KVBvNpptn38sfHLrSoo0pYClRasSbVGCc',
+    secret: Config.auth.sessionSecret,
     store: new LevelStore(`${Config.appDataPath}/sessions`)
   }));
 
