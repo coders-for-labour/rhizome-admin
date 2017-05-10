@@ -34,7 +34,7 @@
     "passport-google-oauth": "~1.0.0",
     "proxyquire": "~1.7.x",
     "restler": "~3.4.x",
-    "rhizome-api-js": "~0.0.x",
+    "rhizome-api-js": "~1.0.x",
     "winston": "~2.2.x",
     "winston-logrotate": "~1.0.x"
   },
