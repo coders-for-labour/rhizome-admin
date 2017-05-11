@@ -30,8 +30,8 @@ module.exports.init = app => {
       name: profile.displayName,
       email: profile.emails[0].value,
       profileUrl: profile._json.url,
-      profileImgUrl: profile._json.image.url,
-      bannerImgUrl: profile._json.cover.coverPhoto.url
+      profileImgUrl: profile._json.image.url
+      // bannerImgUrl: profile._json.cover.coverPhoto.ur
     };
 
     Logging.logDebug(user);
